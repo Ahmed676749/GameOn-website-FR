@@ -32,7 +32,10 @@ btnClose.onclick = function() {
 const first = document.getElementById("first");
 const last = document.getElementById("last");
 const email = document.getElementById("email");
-
+const quantity = document.getElementById("quantity");
+const radioBtn = document.getElementsByName("location");
+const checkbox = document.getElementById("checkbox1");
+const contactForm = document.getElementById("contactForm");
 
 
 // fonction qui valide le prenom
@@ -105,12 +108,71 @@ function validateBirthdate(birthdate) {
   return true;
 }
 
+// fonction qui vérifie si c'est un nombre
+function isQuantityValid() {
+  const quantityValue = quantity.value;
+  if(isNaN(quantityValue)) {
+    displayError(quantity, "Ce n'est pas un nombre")
+  } else {
+    hideError(quantity);
+    return true;
+  }
+}
+
+// fonction qui vérifie si un bouton radio est séectionné
+function isRadioSelected(){
+  let selected = false;
+
+  for (const radio of radioBtn) {
+    if(radio.checked){
+      selected = true;
+      break;
+    }
+  }
+
+  if(!selected){
+    displayError(radioBtn[0], "Veuillez sélectionner un choix")
+  }else{
+    hideError(radioBtn[0]);
+    return true;
+  }
+
+}
+
+// fonction qui vérifie si la case condition est cochée
+function isConditionChecked(){
+  const isChecked = checkbox.checked;
+  if(!isChecked){
+    displayError(checkbox, "Veuillez accepter les conditions")
+  }else{
+    hideError(checkbox);
+    return true;
+  }
+}
+
+// fonction qui gère l'affichage du message de succès
+function displaySuccessMessage() {
+  const successContent = document.createElement("div");
+  const successMessage = document.createElement("span");
+  successMessage.innerHTML = "Merci pour votre inscription";
+  const successBtn = document.createElement("input");
+  successBtn.setAttribute("type", "button");
+  successBtn.classList.add("button", "btn-submit");
+  successBtn.value = "Fermer";
+  successContent.appendChild(successMessage);
+  successContent.appendChild(successBtn);
+  contactForm.replaceWith(successContent);
+}
+
 function isFormValid() {
   const _isFirstValid = isFirstNameValid();
   const _isLastNameValid = isLastNameValid();
   const _isEmailValid = isEmailValid();
   const _validateBirthdate = validateBirthdate(birthdate);
-  return _isFirstValid && _isLastNameValid && _isEmailValid && _validateBirthdate;
+  const _isQuantityValid = isQuantityValid();
+  const _isRadioSelected = isRadioSelected();
+  const _isConditionChecked = isConditionChecked();
+  return _isFirstValid && _isLastNameValid && _isEmailValid && _validateBirthdate && _isQuantityValid && _isRadioSelected && _isConditionChecked;
 }
 
 // gestion de la soummission
@@ -118,9 +180,7 @@ const btnSubmit = document.getElementsByClassName("btn-submit")[0];
 btnSubmit.addEventListener("click", function(event) {
   event.preventDefault();
   if(isFormValid()) {
-    alert('ok');
-  } else {
-    alert("no ok");
+    displaySuccessMessage();
   }
 });
 
