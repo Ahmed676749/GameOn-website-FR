@@ -153,15 +153,31 @@ function isConditionChecked(){
 // fonction qui gère l'affichage du message de succès
 function displaySuccessMessage() {
   const successContent = document.createElement("div");
+  const successContentMessage = document.createElement("div");
+  successContent.className = "messageContent";
+  successContent.insertBefore(successContentMessage, successContent.firstChild);
   const successMessage = document.createElement("span");
   successMessage.innerHTML = "Merci pour votre inscription";
   const successBtn = document.createElement("input");
   successBtn.setAttribute("type", "button");
+  successBtn.setAttribute("id", "close-modal-success");
   successBtn.classList.add("button", "btn-submit");
   successBtn.value = "Fermer";
   successContent.appendChild(successMessage);
   successContent.appendChild(successBtn);
   contactForm.replaceWith(successContent);
+}
+
+// fonction qui gère la fermeture du message de succès
+function closeModalSucccess() {
+
+// récupérer le bouton de fermeture
+  const btnCloseSuccess = document.getElementById("close-modal-success"); 
+
+// fermeture de la modal lors du clic sur le bouton de fermeture
+  btnCloseSuccess.onclick = function() {
+    modalbg.style.display = "none";
+  }
 }
 
 function isFormValid() {
@@ -180,7 +196,8 @@ const btnSubmit = document.getElementsByClassName("btn-submit")[0];
 btnSubmit.addEventListener("click", function(event) {
   event.preventDefault();
   if(isFormValid()) {
-    displaySuccessMessage();
+    displaySuccessMessage() 
+    closeModalSucccess();
   }
 });
 
